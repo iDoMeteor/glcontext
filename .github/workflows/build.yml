@@ -78,6 +78,9 @@ jobs:
           for name in ['wgl'] if sys.platform == 'win32' else ['x11', 'egl']:
               module = importlib.import_module('glcontext.' + name)
               print('imported', module.__file__)
+
+          # an extension that does not declare Py_mod_gil makes the interpreter re-enable the GIL
+          assert not sys._is_gil_enabled(), 'importing glcontext enabled the GIL'
           EOF
 
   build-aarch64:
